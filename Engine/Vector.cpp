@@ -18,6 +18,16 @@ Vector& Vector::operator+=(const Vector& rhs)
 	return *this = *this + rhs;
 }
 
+Vector Vector::operator-( const Vector& rhs ) const
+{
+	return Vector( x - rhs.x,y - rhs.y );
+}
+
+Vector& Vector::operator-=( const Vector& rhs )
+{
+	return *this = *this - rhs;
+}
+
 Vector Vector::operator*(float rhs) const
 {
 	return Vector( x * rhs , y * rhs );
@@ -26,6 +36,11 @@ Vector Vector::operator*(float rhs) const
 Vector& Vector::operator*=(float rhs)
 {
 	return *this = *this * rhs;
+}
+
+bool Vector::operator==( const Vector& rhs ) const
+{
+	return x == rhs.x && y == rhs.y;
 }
 
 float Vector::getLength() const

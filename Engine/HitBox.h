@@ -1,13 +1,17 @@
 #pragma once
+#include "Vector.h"
 class HitBox
 {
 public:
 	HitBox() = default;
-	HitBox( float x0_in,float y0_in,float x1_in,float y1_in );
-	bool operator==( const HitBox & rhs ) const;
+	HitBox( float left_in,float right_in,float top_in,float bottem_in );
+	HitBox( const Vector & topleft,const Vector & bottemright );
+	HitBox( const Vector & topleft,float width,float height );
+	bool isOverlappingWith( const HitBox & other ) const;
+	static HitBox fromCenter( const Vector & center,float width,float height );
 public:
-	float x0;
-	float y0;
-	float x1;
-	float y1;
+	float left;
+	float right;
+	float top;
+	float bottem;
 };

@@ -1,15 +1,32 @@
 #include "HitBox.h"
 
-HitBox::HitBox( float x0_in,float y0_in,float x1_in,float y1_in )
+HitBox::HitBox( float left_in,float right_in,float top_in,float bottem_in )
 	:
-	x0( x0 ),
-	y0( y0 ),
-	x1( x1 ),
-	y1( y1 )
+	left( left_in ),
+	right( left_in ),
+	top( top_in ),
+	bottem( bottem_in )
 {
 }
 
-bool HitBox::operator==( const HitBox& rhs ) const
+HitBox::HitBox( const Vector& topleft,const Vector& bottemright )
 {
-	return x0 == rhs.x0 && y0 == rhs.y0 && x1 == rhs.x1 && y1 == rhs.y1;
+	HitBox( topleft.x,bottemright.x,topleft.y,bottemright.y );
+}
+
+HitBox::HitBox( const Vector& topleft,float width,float height )
+{
+	HitBox( topleft,topleft + Vector( width,height ) );
+}
+
+bool HitBox::isOverlappingWith( const HitBox& other ) const
+{
+	return right > other.left&& left < other.right
+		&& bottem > other.top&& top < other.bottem;
+}
+
+HitBox HitBox::fromCenter( const Vector& center,float width,float height )
+{
+	const Vector half( width * 0.5f,height * 0.5f );
+	return HitBox( center - half,center + half );
 }
