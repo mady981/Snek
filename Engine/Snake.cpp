@@ -16,8 +16,11 @@ void Snake::MovBy( const Vector& delta_vel )
 
 void Snake::Grow()
 {
-	++nSegments;
-	segments[nSegments - 1].inBody();
+	if ( nSegments < maxSegments )
+	{
+		++nSegments;
+		segments[nSegments - 1].inBody();
+	}
 }
 
 void Snake::Draw( Graphics& gfx )
