@@ -61,18 +61,6 @@ void Game::UpdateModel()
         BufferCounter = 0;
         snek.MovBy( delta_vel );
     }
-    if ( wnd.kbd.KeyIsPressed( VK_SPACE ) )
-    {
-        if ( !pressed )
-        {
-            snek.Grow();
-        }
-        pressed = true;
-    }
-    else
-    {
-        pressed = false;
-    }
 }
 
 void Game::ComposeFrame()
