@@ -61,6 +61,7 @@ void Game::UpdateModel()
         BufferCounter = 0;
         snek.MovBy( delta_vel );
     }
+    //test
 }
 
 void Game::ComposeFrame()
