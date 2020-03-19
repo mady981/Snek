@@ -23,6 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+#include "Snake.h"
+#include "Vector.h"
 
 class Game
 {
@@ -34,13 +36,13 @@ public:
 private:
 	void ComposeFrame();
 	void UpdateModel();
-	/********************************/
-	/*  User Functions              */
-	/********************************/
+private:
+    static constexpr int Buffer = 20;
+    int BufferCounter = 0;
+    bool pressed = false;
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	/********************************/
-	/*  User Variables              */
-	/********************************/
+    Snake snek;
+    Vector delta_vel = { 0,0 };
 };
