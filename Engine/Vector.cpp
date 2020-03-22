@@ -45,12 +45,12 @@ bool Vector::operator==( const Vector& rhs ) const
 
 float Vector::getLength() const
 {
-	return int( std::sqrt( getLengthSq() ) );
+	return float( std::sqrt( getLengthSq() ) );
 }
 
 float Vector::getLengthSq() const
 {
-	return int( x * x + y * y );
+	return float( x * x + y * y );
 }
 
 Vector& Vector::Nomalize()
@@ -63,7 +63,7 @@ Vector Vector::getNomalize() const
 	const float len = getLengthSq();
 	if ( len != 0.0f )
 	{
-		return *this * (1.0f / len);
+		return *this * int( (1.0f / len) );
 	}
 	return *this;
 }
