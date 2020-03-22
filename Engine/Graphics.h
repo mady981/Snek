@@ -63,9 +63,13 @@ public:
 	{
 		DrawRect( x0,y0,x0 + height,y0 + width, c );
 	}
-	void DrawRectHB( const HitBox& hb,Color c )
+	void DrawRectVec( const Vector& topleft,const Vector& bottemright,Color c )
 	{
-		DrawRect( int( hb.left ),int( hb.top ),int( hb.right ),int( hb.bottem ),c );
+		DrawRect( topleft.x,topleft.y,bottemright.x,bottemright.y,c );
+	}
+	void DrawRectVecDim( const Vector& toprleft,int width,int height,Color c )
+	{
+		DrawRectDim( toprleft.x,toprleft.y,height,width,c );
 	}
 	~Graphics();
 private:

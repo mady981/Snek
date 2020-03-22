@@ -1,7 +1,7 @@
 #include "Vector.h"
 #include <cmath>
 
-Vector::Vector(float x_in, float y_in)
+Vector::Vector( int x_in,int y_in )
 	:
 	x( x_in ),
 	y( y_in )
@@ -28,12 +28,12 @@ Vector& Vector::operator-=( const Vector& rhs )
 	return *this = *this - rhs;
 }
 
-Vector Vector::operator*(float rhs) const
+Vector Vector::operator*( int rhs ) const
 {
 	return Vector( x * rhs , y * rhs );
 }
 
-Vector& Vector::operator*=(float rhs)
+Vector& Vector::operator*=( int rhs )
 {
 	return *this = *this * rhs;
 }
@@ -45,12 +45,12 @@ bool Vector::operator==( const Vector& rhs ) const
 
 float Vector::getLength() const
 {
-	return std::sqrt( getLengthSq() );
+	return int( std::sqrt( getLengthSq() ) );
 }
 
 float Vector::getLengthSq() const
 {
-	return x * x + y * y;
+	return int( x * x + y * y );
 }
 
 Vector& Vector::Nomalize()

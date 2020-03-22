@@ -25,6 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
+    brd( gfx ),
     snek({ 2,2 })
 {
 }
@@ -39,43 +40,54 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-    if ( wnd.kbd.KeyIsPressed( VK_UP ) )
-    {
-        delta_vel = { 0,-1 };
-    }
-    else if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
-    {
-        delta_vel = { 0,1 };
-    }
-    else if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
-    {
-        delta_vel = { -1,0 };
-    }
-    else if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
-    {
-        delta_vel = { 1,0 };
-    }
-    ++BufferCounter;
-    if ( BufferCounter == Buffer )
-    {
-        BufferCounter = 0;
-        snek.MovBy( delta_vel );
-    }
-    if ( wnd.kbd.KeyIsPressed( VK_SPACE ) )
-    {
-        if ( !pressed )
-        {
-            snek.Grow();
-        }
-        pressed = true;
-    }
+    if ( Gameover )
+    {}
     else
     {
-        pressed = false;
+        if ( wnd.kbd.KeyIsPressed( VK_UP ) )
+        {
+            delta_vel = { 0,-1 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
+        {
+            delta_vel = { 0,1 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
+        {
+            delta_vel = { -1,0 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
+        {
+            delta_vel = { 1,0 };
+        }
+        ++BufferCounter;
+        if ( BufferCounter == Buffer )
+        {
+            BufferCounter = 0;
+            snek.MovBy( delta_vel );
+        }
+        if ( snek.isinTile( snek.nextHeadPos( delta_vel ) ) )
+        {
+            Gameover = true;
+        }
+
+
+        if ( wnd.kbd.KeyIsPressed( VK_SPACE ) )
+        {
+            if ( !pressed )
+            {
+                snek.Grow();
+            }
+            pressed = true;
+        }
+        else
+        {
+            pressed = false;
+        }
     }
 }
 
 void Game::ComposeFrame()
 {
-    snek.Draw( gfx );
+    snek.Draw( brd );
 }
