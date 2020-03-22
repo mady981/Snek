@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Snake.h"
 #include "Vector.h"
+#include "Board.h"
 
 class Game
 {

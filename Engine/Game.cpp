@@ -28,6 +28,11 @@ Game::Game( MainWindow& wnd )
     brd( gfx ),
     snek({ 2,2 })
 {
+    brd.SetCells( Board::CellContens::Food );
+    for ( int i = 0; i < 50; ++i )
+    {
+        brd.SetCells( Board::CellContens::Poison );
+    }
 }
 
 void Game::Go()
@@ -41,7 +46,8 @@ void Game::Go()
 void Game::UpdateModel()
 {
     if ( Gameover )
-    {}
+    {
+    }
     else
     {
         if ( wnd.kbd.KeyIsPressed( VK_UP ) )
@@ -66,23 +72,19 @@ void Game::UpdateModel()
             BufferCounter = 0;
             snek.MovBy( delta_vel );
         }
-        if ( snek.isinTile( snek.nextHeadPos( delta_vel ) ) )
+        const Vector next = { snek.nextHeadPos( delta_vel ) };
+        if ( snek.isinTile( next ) || brd.isColliding( next,Board::CellContens::Death ) )
         {
             Gameover = true;
         }
-
-
-        if ( wnd.kbd.KeyIsPressed( VK_SPACE ) )
+        if ( brd.isColliding( next,Board::CellContens::Food ) )
         {
-            if ( !pressed )
-            {
-                snek.Grow();
-            }
-            pressed = true;
+            brd.SetCells( Board::CellContens::Food );
+            snek.Grow();
         }
-        else
+        if ( brd.isColliding( next,Board::CellContens::Poison ) )
         {
-            pressed = false;
+
         }
     }
 }
@@ -90,4 +92,5 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
     snek.Draw( brd );
+    brd.Draw();
 }
