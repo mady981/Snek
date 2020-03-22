@@ -40,6 +40,7 @@ private:
 private:
     static constexpr int Buffer = 20;
     int BufferCounter = 0;
+    int speedup = 0;
     bool Gameover = false;
     bool pressed = false;
 private:

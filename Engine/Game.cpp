@@ -29,9 +29,13 @@ Game::Game( MainWindow& wnd )
     snek({ 2,2 })
 {
     brd.SetCells( Board::CellContens::Food );
-    for ( int i = 0; i < 50; ++i )
+    for ( int i = 0; i < 400; ++i )
     {
         brd.SetCells( Board::CellContens::Poison );
+    }
+    for ( int i = 0; i < 20; ++i )
+    {
+        brd.SetCells( Board::CellContens::Death );
     }
 }
 
@@ -67,24 +71,27 @@ void Game::UpdateModel()
             delta_vel = { 1,0 };
         }
         ++BufferCounter;
-        if ( BufferCounter == Buffer )
+        if ( BufferCounter == Buffer - speedup )
         {
+            const Vector next = { snek.nextHeadPos( delta_vel ) };
+            if ( snek.isinTile( next ) || brd.isColliding( next,Board::CellContens::Death ) )
+            {
+                Gameover = true;
+            }
+            if ( brd.isColliding( next,Board::CellContens::Food ) )
+            {
+                brd.SetCells( Board::CellContens::Food );
+                snek.Grow();
+            }
+            if ( brd.isColliding( next,Board::CellContens::Poison ) && speedup <= Buffer )
+            {
+                ++speedup;
+            }
             BufferCounter = 0;
-            snek.MovBy( delta_vel );
-        }
-        const Vector next = { snek.nextHeadPos( delta_vel ) };
-        if ( snek.isinTile( next ) || brd.isColliding( next,Board::CellContens::Death ) )
-        {
-            Gameover = true;
-        }
-        if ( brd.isColliding( next,Board::CellContens::Food ) )
-        {
-            brd.SetCells( Board::CellContens::Food );
-            snek.Grow();
-        }
-        if ( brd.isColliding( next,Board::CellContens::Poison ) )
-        {
-
+            if ( !Gameover )
+            {
+                snek.MovBy( delta_vel );
+            }
         }
     }
 }
