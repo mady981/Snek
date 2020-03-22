@@ -20,12 +20,30 @@ void Snake::Grow()
 	segments[nSegments - 1].inBody();
 }
 
-void Snake::Draw( Graphics& gfx )
+void Snake::Draw( Board& brd )
 {
 	for ( int i = 0; i < nSegments; ++i )
 	{
-		segments[i].Draw( gfx );
+		segments[i].Draw( brd );
 	}
+}
+
+bool Snake::isinTile( const Vector& target )
+{
+	for ( int i = 1; i < nSegments; ++i )
+	{
+		if ( segments[i].getPos() == target )
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+const Vector Snake::nextHeadPos( const Vector& delta_vel ) const
+{
+	const Vector next = segments[0].getPos() + delta_vel;
+	return Vector( next );
 }
 
 void Snake::Segment::inHead( const Vector& pos_in )
@@ -49,12 +67,12 @@ void Snake::Segment::MovBy( const Vector& delta_vel )
 	pos += delta_vel;
 }
 
-void Snake::Segment::Draw( Graphics& gfx )
+void Snake::Segment::Draw( Board& brd )
 {
-	gfx.DrawRectHB( getHitBox(),c );
+	brd.DrawCell( getPos(),c );
 }
 
-HitBox Snake::Segment::getHitBox() const
+const Vector Snake::Segment::getPos() const
 {
-	return HitBox( pos * dimansion + Vector( 1.0f,1.0f ),dimansion - 2.0f,dimansion - 2.0f );
+	return Vector( pos );
 }

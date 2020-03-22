@@ -25,6 +25,7 @@
 #include "Graphics.h"
 #include "Snake.h"
 #include "Vector.h"
+#include "Board.h"
 
 class Game
 {
@@ -39,10 +40,12 @@ private:
 private:
     static constexpr int Buffer = 20;
     int BufferCounter = 0;
+    bool Gameover = false;
     bool pressed = false;
 private:
 	MainWindow& wnd;
 	Graphics gfx;
+    Board brd;
     Snake snek;
     Vector delta_vel = { 0,0 };
 };

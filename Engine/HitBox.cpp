@@ -1,6 +1,6 @@
 #include "HitBox.h"
 
-HitBox::HitBox( float left_in,float right_in,float top_in,float bottem_in )
+HitBox::HitBox( int left_in,int right_in,int top_in,int bottem_in )
 	:
 	left( left_in ),
 	right( right_in ),
@@ -15,7 +15,7 @@ HitBox::HitBox( const Vector& topleft,const Vector& bottemright )
 {
 }
 
-HitBox::HitBox( const Vector& topleft,float width,float height )
+HitBox::HitBox( const Vector& topleft,int width,int height )
 	:
 	HitBox( topleft,topleft + Vector( width,height ) )
 {
@@ -33,8 +33,8 @@ bool HitBox::isOverlappingWith( const Vector& other ) const
 		&& bottem > other.y && top < other.y;
 }
 
-HitBox HitBox::fromCenter( const Vector& center,float width,float height )
+HitBox HitBox::fromCenter( const Vector& center,int width,int height )
 {
-	const Vector half( width * 0.5f,height * 0.5f );
+	const Vector half( width / 2,height / 2 );
 	return HitBox( center - half,center + half );
 }

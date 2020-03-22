@@ -25,8 +25,14 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
+    brd( gfx ),
     snek({ 2,2 })
 {
+    brd.SetCells( Board::CellContens::Food );
+    for ( int i = 0; i < 50; ++i )
+    {
+        brd.SetCells( Board::CellContens::Poison );
+    }
 }
 
 void Game::Go()
@@ -39,32 +45,52 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-    if ( wnd.kbd.KeyIsPressed( VK_UP ) )
+    if ( Gameover )
     {
-        delta_vel = { 0,-1 };
     }
-    else if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
+    else
     {
-        delta_vel = { 0,1 };
+        if ( wnd.kbd.KeyIsPressed( VK_UP ) )
+        {
+            delta_vel = { 0,-1 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_DOWN ) )
+        {
+            delta_vel = { 0,1 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
+        {
+            delta_vel = { -1,0 };
+        }
+        else if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
+        {
+            delta_vel = { 1,0 };
+        }
+        ++BufferCounter;
+        if ( BufferCounter == Buffer )
+        {
+            BufferCounter = 0;
+            snek.MovBy( delta_vel );
+        }
+        const Vector next = { snek.nextHeadPos( delta_vel ) };
+        if ( snek.isinTile( next ) || brd.isColliding( next,Board::CellContens::Death ) )
+        {
+            Gameover = true;
+        }
+        if ( brd.isColliding( next,Board::CellContens::Food ) )
+        {
+            brd.SetCells( Board::CellContens::Food );
+            snek.Grow();
+        }
+        if ( brd.isColliding( next,Board::CellContens::Poison ) )
+        {
+
+        }
     }
-    else if ( wnd.kbd.KeyIsPressed( VK_LEFT ) )
-    {
-        delta_vel = { -1,0 };
-    }
-    else if ( wnd.kbd.KeyIsPressed( VK_RIGHT ) )
-    {
-        delta_vel = { 1,0 };
-    }
-    ++BufferCounter;
-    if ( BufferCounter == Buffer )
-    {
-        BufferCounter = 0;
-        snek.MovBy( delta_vel );
-    }
-    //test
 }
 
 void Game::ComposeFrame()
 {
-    snek.Draw( gfx );
+    snek.Draw( brd );
+    brd.Draw();
 }
